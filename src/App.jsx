@@ -132,7 +132,6 @@ function App() {
         { id: 'baja', nombre: 'Planta Baja', imagen: sedePatria }
       ],
       servicios: [
-        'Instituto de Ciencias Sociales',
         'Aulas Talleres',
         'Espacios de Práctica',
         'Oficinas Administrativas',
