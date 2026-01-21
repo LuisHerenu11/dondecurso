@@ -11,9 +11,8 @@ async function run() {
         });
 
         const sheets = google.sheets({ version: 'v4', auth });
-        const RANGE = 'GRILLA!A5:L'; // Ajusta esto si tu hoja tiene otro nombre
+        const RANGE = 'GRILLA!A5:L'; 
 
-        console.log('⏳ Conectando con Google Sheets...');
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.SPREADSHEET_ID,
             range: RANGE,
@@ -45,11 +44,9 @@ async function run() {
         const outputPath = path.resolve(__dirname, '../netlify/functions/data.json');
         fs.mkdirSync(path.dirname(outputPath), { recursive: true });
         fs.writeFileSync(outputPath, JSON.stringify(datosProcesados, null, 2));
-    
-        console.log(`✅ ¡Éxito! Se generaron ${datosProcesados.length} registros en ${outputPath}`);
 
     } catch (error) {
-        console.error('❌ Error:', error.message);
+        console.error('error:', error.message);
         process.exit(1);
     }
 }

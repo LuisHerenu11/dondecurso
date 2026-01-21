@@ -7,7 +7,6 @@ import mapaOrigone from './assets/mapa-origone.png'
 import mapaOrigoneAlta from './assets/mapa-origone-planta-alta.png'
 import sedePatria from './assets/sede-la-patria.png'
 
-// Componentes de íconos SVG
 const SearchIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="11" cy="11" r="8"></circle>
@@ -19,6 +18,15 @@ const UserIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
     <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+)
+
+const IdCardIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+    <line x1="8" y1="21" x2="16" y2="21"></line>
+    <line x1="12" y1="17" x2="12" y2="21"></line>
+    <circle cx="10" cy="10" r="3"></circle>
   </svg>
 )
 
@@ -107,7 +115,6 @@ function App() {
   const [mapaActivo, setMapaActivo] = useState('origone')
   const [pisoActivo, setPisoActivo] = useState('baja')
 
- 
   const mapas = {
     origone: {
       nombre: 'Origone',
@@ -143,7 +150,7 @@ function App() {
   const buscarComision = async (e) => {
     e.preventDefault()
     if (!busqueda) {
-      setError('Por favor, ingresa el nombre o número de tu comisión')
+      setError('Por favor, ingresa tu búsqueda')
       return
     }
 
@@ -232,7 +239,7 @@ function App() {
             Consulta tu <span>Información Académica</span>
           </h1>
           <p className="hero-description">
-            Ingresa el nombre de tu comisión o el número para acceder a tu carrera, comisión, horarios de cursada y ubicación en nuestras sedes.
+            Busca por número de comisión, DNI o legajo para acceder a tu cursada, horarios y ubicación en nuestras sedes.
           </p>
         </div>
 
@@ -240,24 +247,21 @@ function App() {
         <div className="search-container">
           <form onSubmit={buscarComision}>
             <div className="mb-6">
-              <label htmlFor="comision" className="form-label">
+              <label htmlFor="busqueda" className="form-label">
                 <UserIcon />
-                Ingresá tu comisión
+                Ingresá Comisión o DNI
               </label>
               <div className="input-group">
                 <input
                   type="text"
-                  id="comision"
+                  id="busqueda"
                   value={busqueda}
                   onChange={(e) => setBusqueda(e.target.value)}
-                  placeholder="Ejemplo: COMISIÓN 101 TT"
+                  placeholder="Ej: COMISIÓN 101, 12345678, APELLIDO"
                   className="search-input"
                 />
-                <div className="comision-badge">COMISIÓN</div>
+                <div className="comision-badge">BUSCAR</div>
               </div>
-              <p className="demo-text mb-4">
-                <span>Ejemplos de búsqueda:</span> COMISIÓN 101 TT, 205 TN, 150 TM
-              </p>
             </div>
 
             <div className="form-buttons">
@@ -299,11 +303,21 @@ function App() {
             <div className="card-header">
               <div className="comision-info">
                 <div className="comision-icon">
-                  <UserIcon />
+                  {resultado.alumno ? <UserIcon /> : <UsersIcon />}
                 </div>
                 <div className="comision-details">
-                  <h2>{resultado.id}</h2>
-                  <p>{resultado.carrera}</p>
+                  {/* Lógica: Si hay alumno, mostramos su nombre destacado. Si no, la comisión */}
+                  {resultado.alumno ? (
+                     <>
+                      <h2>{resultado.alumno}</h2>
+                      <p>{resultado.id}</p>
+                     </>
+                  ) : (
+                    <>
+                      <h2>{resultado.id}</h2>
+                      <p>{resultado.carrera}</p>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="location-info">
@@ -323,6 +337,33 @@ function App() {
               </h3>
 
               <div className="info-grid">
+                
+                {/* Nuevos campos condicionales para Alumno/DNI */}
+                {resultado.alumno && (
+                  <div className="info-card highlight-card">
+                    <div className="card-header-small">
+                      <div className="card-icon">
+                        <UserIcon />
+                      </div>
+                      <h4>Estudiante</h4>
+                    </div>
+                    <p>{resultado.alumno}</p>
+                  </div>
+                )}
+
+                {resultado.dni && (
+                  <div className="info-card">
+                    <div className="card-header-small">
+                      <div className="card-icon">
+                        <IdCardIcon />
+                      </div>
+                      <h4>DNI / Legajo</h4>
+                    </div>
+                    <p>{resultado.dni}</p>
+                  </div>
+                )}
+                {/* Fin de campos nuevos */}
+
                 <div className="info-card">
                   <div className="card-header-small">
                     <div className="card-icon">
@@ -354,13 +395,13 @@ function App() {
                 </div>
               </div>
 
-              <div className="info-grid" style={{ gridTemplateColumns: '1fr' }}>
+              <div className="info-grid" style={{ gridTemplateColumns: '1fr', marginTop: '1rem' }}>
                 <div className="info-card">
                   <div className="card-header-small">
                     <div className="card-icon">
                       <MapPinIcon />
                     </div>
-                    <h4>Aula</h4>
+                    <h4>Aula Asignada</h4>
                   </div>
                   <div className="aula-badge">{resultado.aula}</div>
                 </div>
@@ -493,7 +534,7 @@ function App() {
                         </>
                       ) : (
                         <>
-                          Tu comisión se encuentra en: <span>{resultado.edificio}</span>
+                          Tu cursada se encuentra en: <span>{resultado.edificio}</span>
                           {resultado.piso && ` - ${resultado.piso}`}
                           <br />
                           <small style={{ color: '#718096', fontStyle: 'italic' }}>
