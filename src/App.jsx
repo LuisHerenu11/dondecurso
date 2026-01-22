@@ -79,7 +79,6 @@ function App() {
       const data = await response.json()
 
       if (response.ok) {
-        // CAMBIO: Verificamos si la respuesta tiene inscripciones
         if (data.inscripciones && data.inscripciones.length > 0) {
           setResultados(data)
         } else {
@@ -101,19 +100,6 @@ function App() {
     setError(null)
   }
 
-  
-  const obtenerTextoHorario = (horariosObj) => {
-    if (!horariosObj) return 'A confirmar' // Pequeña seguridad extra
-    const dias = Object.entries(horariosObj).filter(([_, h]) => h !== '-')
-    if (dias.length === 0) return 'A confirmar'
-    return dias.map(([dia, hora]) => (
-      <div key={dia} className="capitalize flex items-center gap-1">
-        <span className="font-bold text-unahur-green">{dia}:</span> {hora}
-      </div>
-    ))
-  }
-
- 
   const detectarSede = (aulaTexto) => {
     if (!aulaTexto) return null
     const texto = aulaTexto.toLowerCase()
@@ -125,7 +111,6 @@ function App() {
   const mapaActual = mapas[mapaActivo] || mapas.origone
   const pisoActual = mapaActual.pisos.find(p => p.id === pisoActivo) || mapaActual.pisos[0]
 
-  // CAMBIO: resultados ya es el objeto del alumno, no un array
   const alumnoDatos = resultados; 
 
   return (
@@ -253,9 +238,8 @@ function App() {
         </div>
 
         {/* Results Card */}
-        {/* CAMBIO: Checkeamos resultados.inscripciones */}
         {resultados && alumnoDatos && resultados.inscripciones && (
-          <div className="bg-white rounded-2xl shadow-card p-6 md:p-8 mb-12 border border-light-gray">
+          <div className="bg-white rounded-2xl shadow-card p-6 md:p-8 mb-12 border border-light-gray w-full">
             
             {/* Header del Alumno */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-6 border-b border-light-gray mb-8">
@@ -264,7 +248,6 @@ function App() {
                    <User size={24} className="text-white" />
                 </div>
                 <div>
-                    {/* CAMBIO: Usamos alumnoDatos.alumno directo */}
                     <h2 className="text-2xl md:text-3xl font-bold text-dark-gray capitalize">{alumnoDatos.alumno}</h2>
                     <p className="text-medium-gray text-lg mt-1">Estudiante Regular</p>
                 </div>
@@ -279,28 +262,33 @@ function App() {
             <div className="mb-8">
               <h3 className="text-xl font-bold text-dark-gray mb-6 pb-3 border-b border-light-gray flex items-center">
                 <BookOpen size={20} className="text-unahur-green mr-3" />
-                {/* CAMBIO: Contador de materias desde inscripciones.length */}
                 Materias Inscriptas ({resultados.inscripciones.length})
               </h3>
 
-              {/* TABLA DE MATERIAS  */}
+              {/* TABLA DE MATERIAS MODIFICADA */}
               <div className="overflow-hidden rounded-xl border border-light-gray">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
+                     
                       <tr className="bg-gray-50 text-medium-gray text-sm uppercase font-bold tracking-wider border-b border-light-gray">
-                        <th className="px-6 py-4">Materia</th>
-                        <th className="px-6 py-4">Comisión</th>
-                        <th className="px-6 py-4">Docente</th>
-                        <th className="px-6 py-4">Día y Horario</th>
-                        <th className="px-6 py-4">Aula</th>
+                        <th className="px-6 py-4 w-[25%]">Materia</th>
+                        <th className="px-6 py-4 w-[10%]">Comisión</th>
+                        <th className="px-6 py-4 w-[20%]">Docente</th>
+                        <th className="px-6 py-4 w-[15%]">Días de Cursada</th> 
+                        <th className="px-6 py-4 w-[15%]">Horario</th>        
+                        <th className="px-6 py-4 w-[15%]">Aula</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-light-gray bg-white">
-                      {/* CAMBIO: Mapeamos sobre resultados.inscripciones */}
                       {resultados.inscripciones.map((materia, index) => {
                         const sedeSugerida = detectarSede(materia.aula);
                         
+                        
+                        const diasActivos = materia.horarios 
+                          ? Object.entries(materia.horarios).filter(([_, h]) => h !== '-')
+                          : [];
+
                         return (
                           <tr key={index} className="hover:bg-blue-50/30 transition-colors">
                             <td className="px-6 py-5">
@@ -314,12 +302,37 @@ function App() {
                             <td className="px-6 py-5 text-dark-gray text-sm">
                               {materia.docente}
                             </td>
+                            
+                            {/* COLUMNA DÍAS */}
                             <td className="px-6 py-5">
-                              <div className="flex items-start gap-2 text-sm text-dark-gray">
-                                <Clock size={16} className="text-unahur-green mt-0.5 flex-shrink-0" />
-                                <div className="space-y-1">{obtenerTextoHorario(materia.horarios)}</div>
+                              <div className="flex flex-col gap-1">
+                                {diasActivos.length > 0 ? (
+                                  diasActivos.map(([dia, _]) => (
+                                    <span key={dia} className="capitalize font-bold text-unahur-green flex items-center gap-1">
+                                      <Calendar size={14} /> {dia}
+                                    </span>
+                                  ))
+                                ) : (
+                                  <span className="text-medium-gray text-sm">A confirmar</span>
+                                )}
                               </div>
                             </td>
+
+                            {/* COLUMNA HORARIOS */}
+                            <td className="px-6 py-5">
+                              <div className="flex flex-col gap-1">
+                                {diasActivos.length > 0 ? (
+                                  diasActivos.map(([dia, hora]) => (
+                                    <span key={dia} className="text-dark-gray text-sm font-medium flex items-center gap-1">
+                                      <Clock size={14} className="text-medium-gray" /> {hora}
+                                    </span>
+                                  ))
+                                ) : (
+                                  <span>-</span>
+                                )}
+                              </div>
+                            </td>
+
                             <td className="px-6 py-5">
                               <div className="flex flex-col items-start">
                                 <span className="font-bold text-dark-gray flex items-center gap-2">
