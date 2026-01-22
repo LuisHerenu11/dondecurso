@@ -5,14 +5,14 @@ const path = require('path');
 
 async function run() {
     try {
+        console.log("🔄 Conectando a Google Sheets...");
+        
         const auth = new google.auth.GoogleAuth({
             credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
             scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
         });
 
         const sheets = google.sheets({ version: 'v4', auth });
-        
-      
         const RANGE = 'ALUMNADO!A2:J'; 
 
         const response = await sheets.spreadsheets.values.get({
@@ -22,74 +22,62 @@ async function run() {
 
         const rows = response.data.values;
         if (!rows || rows.length === 0) {
-            console.log('⚠️ No se encontraron datos.');
+            console.log('⚠️ No se encontraron datos en la hoja.');
             return;
         }
 
-        /* MAPA DE DATOS:
-           0: APELLIDO Y NOMBRE 
-           1: DNI (FILTRO)
-           2: MATERIA 
-           3: COMISIÓN 
-           4: DOCENTE 
-           5: DÍA (Lunes, Martes...)
-           6: DESDE (8:00)
-           7: HASTA (12:00)
-           8: ESPACIO 
-           9: EDIFICIO 
-        */
+        // Procesamos TODOS los datos para guardar en JSON local
+        // Agruparemos por DNI para mantener la estructura correcta
+        const alumnosMap = new Map();
 
-        const datosProcesados = rows
-        // Filtramos solo si hay DNI y Comisión
-        .filter(row => row[1] && row[3])
-        .map(row => {
+        rows.forEach(row => {
+            if (!row[1] || !row[3]) return; // Si no hay DNI o Comisión, saltar
+
+            const dni = row[1].toString().replace(/[^0-9]/g, "");
             
-            // Identificamos el día para saber en qué propiedad del objeto guardarlo
+            // Lógica de horarios
             const diaRaw = row[5] || ""; 
             const diaKey = diaRaw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-
-            // CONCATENACIÓN: Unimos "Desde" (col 6) y "Hasta" (col 7)
-            // Resultado ejemplo: "8:00 - 12:00"
             const inicio = row[6] || "";
             const fin = row[7] || "";
             const horarioConcatenado = (inicio && fin) ? `${inicio} - ${fin}` : "A confirmar";
+            
+            const horarios = { lunes: "-", martes: "-", miercoles: "-", jueves: "-", viernes: "-", sabado: "-" };
+            if (horarios.hasOwnProperty(diaKey)) horarios[diaKey] = horarioConcatenado;
 
-            // Estructura de horarios vacía
-            const horarios = {
-                lunes: "-",
-                martes: "-",
-                miercoles: "-",
-                jueves: "-",
-                viernes: "-",
-                sabado: "-"
-            };
-
-            // Insertamos el horario concatenado solo en el día que corresponde
-            if (horarios.hasOwnProperty(diaKey)) {
-                horarios[diaKey] = horarioConcatenado;
-            }
-
-
-            return {
-                dni: row[1].trim(),             
-                alumno: row[0] || "Sin Nombre", 
+            const materiaObj = {
                 materia: row[2] || "Sin Materia",
                 comision: row[3].trim(),
                 docente: row[4] || "A designar",
-                horarios: horarios,             // Objeto con el día cargado
-                aula: `${row[8] || ""} - ${row[9] || ""}`.trim() // Aula - Edificio
+                horarios: horarios,
+                aula: `${row[8] || ""} - ${row[9] || ""}`.trim()
             };
+
+            if (alumnosMap.has(dni)) {
+                // Si el alumno ya existe, agregamos la materia
+                alumnosMap.get(dni).inscripciones.push(materiaObj);
+            } else {
+                // Si es nuevo, creamos el registro
+                alumnosMap.set(dni, {
+                    alumno: row[0] || "Sin Nombre",
+                    dni: row[1].trim(),
+                    inscripciones: [materiaObj]
+                });
+            }
         });
+
+        // Convertir el Mapa a Array
+        const datosProcesados = Array.from(alumnosMap.values());
 
         const outputPath = path.resolve(__dirname, '../netlify/functions/data.json');
         fs.mkdirSync(path.dirname(outputPath), { recursive: true });
         
         fs.writeFileSync(outputPath, JSON.stringify(datosProcesados, null, 2));
         
-        console.log(`✅ Datos procesados: ${datosProcesados.length} registros generados.`);
+        console.log(`✅ ÉXITO: Se generó data.json con ${datosProcesados.length} alumnos únicos.`);
 
     } catch (error) {
-        console.error('error:', error.message);
+        console.error('❌ Error:', error.message);
         process.exit(1);
     }
 }

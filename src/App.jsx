@@ -126,7 +126,7 @@ function App() {
             />
             <div className="text-center md:text-left">
               <h1 className="text-xl md:text-2xl font-bold text-white">
-                Universidad Nacional de Hurlingham
+                UNIVERSIDAD NACIONAL DE HURLINGHAM
               </h1>
               <p className="text-white/90 text-sm md:text-base mt-1">
                 "Conocimiento para la inclusión social"
