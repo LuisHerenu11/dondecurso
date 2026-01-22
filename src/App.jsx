@@ -1,111 +1,26 @@
 import { useState } from 'react'
-import './App.css'
+import {
+  Search,
+  User,
+  BookOpen,
+  Calendar,
+  Clock,
+  Users,
+  MapPin,
+  Building,
+  GraduationCap,
+  Map,
+  Navigation,
+  Home,
+  IdCard,
+  ChevronRight
+} from 'lucide-react'
 
 import logoUnahur from './assets/logo-unahur.png'
 import logo from './assets/logo.png'
 import mapaOrigone from './assets/mapa-origone.png'
 import mapaOrigoneAlta from './assets/mapa-origone-planta-alta.png'
 import sedePatria from './assets/sede-la-patria.png'
-
-const SearchIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="8"></circle>
-    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-  </svg>
-)
-
-const UserIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-    <circle cx="12" cy="7" r="4"></circle>
-  </svg>
-)
-
-const IdCardIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-    <line x1="8" y1="21" x2="16" y2="21"></line>
-    <line x1="12" y1="17" x2="12" y2="21"></line>
-    <circle cx="10" cy="10" r="3"></circle>
-  </svg>
-)
-
-const BookOpenIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-  </svg>
-)
-
-const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-    <line x1="16" y1="2" x2="16" y2="6"></line>
-    <line x1="8" y1="2" x2="8" y2="6"></line>
-    <line x1="3" y1="10" x2="21" y2="10"></line>
-  </svg>
-)
-
-const ClockIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"></circle>
-    <polyline points="12 6 12 12 16 14"></polyline>
-  </svg>
-)
-
-const UsersIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-    <circle cx="9" cy="7" r="4"></circle>
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-  </svg>
-)
-
-const MapPinIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-    <circle cx="12" cy="10" r="3"></circle>
-  </svg>
-)
-
-const BuildingIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
-    <rect x="9" y="6" width="6" height="6"></rect>
-    <line x1="9" y1="14" x2="9" y2="18"></line>
-    <line x1="15" y1="14" x2="15" y2="18"></line>
-    <line x1="3" y1="10" x2="21" y2="10"></line>
-  </svg>
-)
-
-const GraduationCapIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-    <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
-  </svg>
-)
-
-const MapIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
-    <line x1="8" y1="2" x2="8" y2="18"></line>
-    <line x1="16" y1="6" x2="16" y2="22"></line>
-  </svg>
-)
-
-const NavigationIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
-  </svg>
-)
-
-const HomeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-  </svg>
-)
 
 function App() {
   const [busqueda, setBusqueda] = useState('')
@@ -184,103 +99,114 @@ function App() {
   const pisoActual = mapaActual.pisos.find(p => p.id === pisoActivo) || mapaActual.pisos[0]
 
   return (
-    <div className="App">
+    <div className="min-h-screen bg-light-bg">
       {/* Header */}
-      <header className="header-container">
-        <div className="header-content">
-          <div className="header-logo-section">
+      <header className="bg-unahur-green px-4 py-4">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
             <img
               src={logo}
               alt="Logo UNAHUR"
-              className="logo-image"
+              className="hidden md:block w-24 h-24 object-contain"
             />
-            <div className="header-title">
-              <h1>Universidad Nacional de Hurlingham</h1>
-              <p>"Conocimiento para la inclusión social"</p>
+            <div className="text-center md:text-left">
+              <h1 className="text-xl md:text-2xl font-bold text-white">
+                Universidad Nacional de Hurlingham
+              </h1>
+              <p className="text-white/90 text-sm md:text-base mt-1">
+                "Conocimiento para la inclusión social"
+              </p>
             </div>
           </div>
-          <div className="cycle-badge">
-            <CalendarIcon />
+          <div className="flex items-center gap-2 shadow-md px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white font-medium text-sm md:text-base">
+            <Calendar size={20} />
             <span>Ciclo 2026</span>
           </div>
         </div>
       </header>
 
       {/* Navigation */}
-      <nav className="navigation">
-        <div className="nav-container">
-          <div className="nav-items">
-            <div className="nav-item">
-              <div className="nav-indicator green"></div>
-              <span>Consulta Académica</span>
+      <nav className="bg-white border-b border-light-gray py-3 shadow-md">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8">
+            <div className="flex items-center">
+              <div className="w-2 h-2 rounded-full bg-unahur-green mr-2"></div>
+              <span className="font-medium text-medium-gray">Consulta Académica</span>
             </div>
-            <div className="nav-divider hidden"></div>
-            <div className="nav-item">
-              <div className="nav-indicator blue"></div>
-              <span>Información por Comisión</span>
+            <div className="hidden md:block w-px h-6 bg-gray-300"></div>
+            <div className="flex items-center">
+              <div className="w-2 h-2 rounded-full bg-unahur-accent mr-2"></div>
+              <span className="font-medium text-medium-gray">Información por Comisión</span>
             </div>
-            <div className="nav-divider hidden"></div>
-            <div className="nav-item">
-              <MapIcon />
-              <span style={{ marginLeft: '0.5rem' }}>Mapas de Sedes</span>
+            <div className="hidden md:block w-px h-6 bg-gray-300"></div>
+            <div className="flex items-center">
+              <Map size={20} className="text-medium-gray" />
+              <span className="font-medium text-medium-gray ml-2">Mapas de Sedes</span>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="main-container">
+      <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Hero Section */}
-        <div className="hero-section">
-          <div className="search-icon-container">
-            <SearchIcon />
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center p-3 rounded-full bg-unahur-blue mb-4">
+            <Search size={32} className="text-white" />
           </div>
-          <h1 className="hero-title">
-            Consulta tu <span>Información Académica</span>
+          <h1 className="text-3xl md:text-4xl font-bold text-dark-gray mb-4">
+            Consulta tu <span className="text-unahur-green">Información Académica</span>
           </h1>
-          <p className="hero-description">
+          <p className="text-medium-gray text-lg max-w-3xl mx-auto">
             Busca por número de comisión, DNI o legajo para acceder a tu cursada, horarios y ubicación en nuestras sedes.
           </p>
         </div>
 
         {/* Search Form */}
-        <div className="search-container">
+        <div className="bg-white rounded-2xl shadow-card p-6 md:p-8 mb-12 max-w-2xl mx-auto border-t-8 border-unahur-green">
           <form onSubmit={buscarComision}>
             <div className="mb-6">
-              <label htmlFor="busqueda" className="form-label">
-                <UserIcon />
-                Ingresá Comisión o DNI
+              <label htmlFor="busqueda" className="block text-dark-gray font-semibold text-lg mb-3">
+                <div className="flex items-center">
+                  <User size={20} className="mr-2" />
+                  Ingresá Comisión o DNI
+                </div>
               </label>
-              <div className="input-group">
+              <div className="relative">
                 <input
                   type="text"
                   id="busqueda"
                   value={busqueda}
                   onChange={(e) => setBusqueda(e.target.value)}
                   placeholder="Ej: COMISIÓN 101, 12345678, APELLIDO"
-                  className="search-input"
+                  className="w-full px-6 py-4 border-2 border-light-gray rounded-xl text-lg focus:outline-none focus:border-unahur-green focus:ring-4 focus:ring-unahur-green/10 bg-white text-dark-gray"
                 />
-                <div className="comision-badge">BUSCAR</div>
+                
               </div>
             </div>
 
-            <div className="form-buttons">
+            <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <button
                 type="submit"
-                className="search-button"
                 disabled={loading}
+                className="flex-1 px-6 py-4 bg-unahur-green text-white font-semibold text-lg rounded-xl hover:bg-[#90c473] active:translate-y-0.5 transition-all duration-200 shadow-button hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 {loading ? (
                   <>
-                    <span className="loading-spinner"></span>
-                    <span>Buscando...</span>
+                    <span className="loading-spinner mr-2"></span>
+                    Buscando...
                   </>
-                ) : 'Buscar Información'}
+                ) : (
+                  <>
+                    <Search size={18} className="mr-2" />
+                    Buscar Información
+                  </>
+                )}
               </button>
               <button
                 type="button"
-                className="reset-button"
                 onClick={manejarReinicio}
+                className="flex-1 px-6 py-4 bg-unahur-blue text-white font-semibold text-lg rounded-xl hover:bg-[#78cee4] transition-colors duration-200"
               >
                 Reiniciar
               </button>
@@ -288,10 +214,10 @@ function App() {
           </form>
 
           {error && (
-            <div className="error-message">
+            <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl">
               <div className="flex items-center">
-                <div className="error-indicator"></div>
-                <span>{error}</span>
+                <div className="w-3 h-3 rounded-full bg-error-red mr-3"></div>
+                <span className="text-error-red">{error}</span>
               </div>
             </div>
           )}
@@ -299,149 +225,155 @@ function App() {
 
         {/* Results Card */}
         {resultado && (
-          <div className="student-card">
-            <div className="card-header">
-              <div className="comision-info">
-                <div className="comision-icon">
-                  {resultado.alumno ? <UserIcon /> : <UsersIcon />}
+          <div className="bg-white rounded-2xl shadow-card p-6 md:p-8 mb-12 border border-light-gray">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-6 border-b border-light-gray mb-8">
+              <div className="flex items-center mb-4 lg:mb-0">
+                <div className="p-3 rounded-xl bg-unahur-green mr-4">
+                  {resultado.alumno ? 
+                    <User size={24} className="text-white" /> : 
+                    <Users size={24} className="text-white" />
+                  }
                 </div>
-                <div className="comision-details">
-                  {/* Lógica: Si hay alumno, mostramos su nombre destacado. Si no, la comisión */}
+                <div>
                   {resultado.alumno ? (
-                     <>
-                      <h2>{resultado.alumno}</h2>
-                      <p>{resultado.id}</p>
-                     </>
+                    <>
+                      <h2 className="text-2xl md:text-3xl font-bold text-dark-gray">{resultado.alumno}</h2>
+                      <p className="text-medium-gray text-lg mt-1">{resultado.id}</p>
+                    </>
                   ) : (
                     <>
-                      <h2>{resultado.id}</h2>
-                      <p>{resultado.carrera}</p>
+                      <h2 className="text-2xl md:text-3xl font-bold text-dark-gray">{resultado.id}</h2>
+                      <p className="text-medium-gray text-lg mt-1">{resultado.carrera}</p>
                     </>
                   )}
                 </div>
               </div>
-              <div className="location-info">
-                {resultado.edificio && (
-                  <div className="flex items-center">
-                    <BuildingIcon />
-                    <span>{resultado.edificio}</span>
-                  </div>
-                )}
-              </div>
+              {resultado.edificio && (
+                <div className="flex items-center text-medium-gray">
+                  <Building size={20} className="text-unahur-accent mr-2" />
+                  <span>{resultado.edificio}</span>
+                </div>
+              )}
             </div>
 
             <div className="mb-8">
-              <h3 className="section-title">
-                <BookOpenIcon />
+              <h3 className="text-xl font-bold text-dark-gray mb-6 pb-3 border-b border-light-gray flex items-center">
+                <BookOpen size={20} className="text-unahur-green mr-3" />
                 Información Académica
               </h3>
 
-              <div className="info-grid">
-                
-                {/* Nuevos campos condicionales para Alumno/DNI */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                 {resultado.alumno && (
-                  <div className="info-card highlight-card">
-                    <div className="card-header-small">
-                      <div className="card-icon">
-                        <UserIcon />
+                  <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
+                    <div className="flex items-center mb-4">
+                      <div className="p-2 rounded-lg bg-unahur-accent mr-3">
+                        <User size={18} className="text-white" />
                       </div>
-                      <h4>Estudiante</h4>
+                      <h4 className="font-bold text-dark-gray">Estudiante</h4>
                     </div>
-                    <p>{resultado.alumno}</p>
+                    <p className="text-dark-gray text-lg font-medium">{resultado.alumno}</p>
                   </div>
                 )}
 
                 {resultado.dni && (
-                  <div className="info-card">
-                    <div className="card-header-small">
-                      <div className="card-icon">
-                        <IdCardIcon />
+                  <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
+                    <div className="flex items-center mb-4">
+                      <div className="p-2 rounded-lg bg-unahur-accent mr-3">
+                        <IdCard size={18} className="text-white" />
                       </div>
-                      <h4>DNI / Legajo</h4>
+                      <h4 className="font-bold text-dark-gray">DNI / Legajo</h4>
                     </div>
-                    <p>{resultado.dni}</p>
+                    <p className="text-dark-gray text-lg font-medium">{resultado.dni}</p>
                   </div>
                 )}
-                {/* Fin de campos nuevos */}
 
-                <div className="info-card">
-                  <div className="card-header-small">
-                    <div className="card-icon">
-                      <GraduationCapIcon />
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
+                  <div className="flex items-center mb-4">
+                    <div className="p-2 rounded-lg bg-unahur-accent mr-3">
+                      <GraduationCap size={18} className="text-white" />
                     </div>
-                    <h4>Carrera</h4>
+                    <h4 className="font-bold text-dark-gray">Carrera</h4>
                   </div>
-                  <p>{resultado.carrera}</p>
+                  <p className="text-dark-gray text-lg font-medium">{resultado.carrera}</p>
                 </div>
 
-                <div className="info-card">
-                  <div className="card-header-small">
-                    <div className="card-icon">
-                      <UsersIcon />
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
+                  <div className="flex items-center mb-4">
+                    <div className="p-2 rounded-lg bg-unahur-accent mr-3">
+                      <Users size={18} className="text-white" />
                     </div>
-                    <h4>Comisión</h4>
+                    <h4 className="font-bold text-dark-gray">Comisión</h4>
                   </div>
-                  <p>{resultado.id}</p>
+                  <p className="text-dark-gray text-lg font-medium">{resultado.id}</p>
                 </div>
 
-                <div className="info-card">
-                  <div className="card-header-small">
-                    <div className="card-icon">
-                      <ClockIcon />
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
+                  <div className="flex items-center mb-4">
+                    <div className="p-2 rounded-lg bg-unahur-accent mr-3">
+                      <Clock size={18} className="text-white" />
                     </div>
-                    <h4>Turno</h4>
+                    <h4 className="font-bold text-dark-gray">Turno</h4>
                   </div>
-                  <p>{resultado.turno}</p>
+                  <p className="text-dark-gray text-lg font-medium">{resultado.turno}</p>
                 </div>
               </div>
 
-              <div className="info-grid" style={{ gridTemplateColumns: '1fr', marginTop: '1rem' }}>
-                <div className="info-card">
-                  <div className="card-header-small">
-                    <div className="card-icon">
-                      <MapPinIcon />
+              <div className="mt-8">
+                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
+                  <div className="flex items-center mb-4">
+                    <div className="p-2 rounded-lg bg-unahur-accent mr-3">
+                      <MapPin size={18} className="text-white" />
                     </div>
-                    <h4>Aula Asignada</h4>
+                    <h4 className="font-bold text-dark-gray">Aula Asignada</h4>
                   </div>
-                  <div className="aula-badge">{resultado.aula}</div>
+                  <div className="bg-emerald-100 text-emerald-900 px-6 py-3 rounded-full font-bold text-xl inline-block mt-2">
+                    {resultado.aula}
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="horarios-container">
-              <h3 className="section-title">
-                <CalendarIcon />
+            <div>
+              <h3 className="text-xl font-bold text-dark-gray mb-6 pb-3 border-b border-light-gray flex items-center">
+                <Calendar size={20} className="text-unahur-green mr-3" />
                 Horarios de Cursada
               </h3>
 
-              {Object.entries(resultado.horarios).map(([dia, materia]) => (
-                materia !== '-' && (
-                  <div key={dia} className="horario-fila">
-                    <span className="dato-label">{dia}:</span>
-                    <span className="dato-valor">{materia}</span>
-                  </div>
-                )
-              ))}
+              <div className="space-y-4">
+                {Object.entries(resultado.horarios).map(([dia, materia]) => (
+                  materia !== '-' && (
+                    <div key={dia} className="flex justify-between items-center py-4 border-b border-light-gray last:border-b-0">
+                      <span className="font-semibold text-medium-gray capitalize flex items-center">
+                        {dia} <ChevronRight size={14} className="mx-2" />
+                      </span>
+                      <span className="font-medium text-dark-gray text-right">{materia}</span>
+                    </div>
+                  )
+                ))}
+              </div>
             </div>
           </div>
         )}
 
-        {/* Maps Section*/}
-        <div className="maps-container">
-          <div className="maps-header">
-            <h3 className="maps-title">
-              <span>Mapas de Sedes</span> UNAHUR
+        {/* Maps Section */}
+        <div className="bg-unahur-blue rounded-2xl shadow-card border border-light-gray mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 md:p-8 bg-unahur-blue rounded-t-2xl">
+            <h3 className="text-2xl font-bold text-white mb-4 md:mb-0">
+              <span className="text-unahur-light-green">Mapas de Sedes</span> UNAHUR
             </h3>
-
-            <div className="maps-buttons">
+            <div className="flex gap-4">
               <button
                 onClick={() => {
                   setMapaActivo('origone')
                   setPisoActivo('baja')
                 }}
-                className={`map-button ${mapaActivo === 'origone' ? 'active' : ''}`}
+                className={`px-4 py-2 rounded-lg font-medium flex items-center transition-all duration-200 ${
+                  mapaActivo === 'origone'
+                    ? 'bg-unahur-green text-white shadow'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
               >
-                <BuildingIcon />
+                <Building size={18} className="mr-2" />
                 Origone
               </button>
               <button
@@ -449,41 +381,49 @@ function App() {
                   setMapaActivo('laPatria')
                   setPisoActivo('baja')
                 }}
-                className={`map-button ${mapaActivo === 'laPatria' ? 'active' : ''}`}
+                className={`px-4 py-2 rounded-lg font-medium flex items-center transition-all duration-200 ${
+                  mapaActivo === 'laPatria'
+                    ? 'bg-unahur-green text-white shadow'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
               >
-                <HomeIcon />
+                <Home size={18} className="mr-2" />
                 La Patria
               </button>
             </div>
           </div>
 
-          <div className="maps-content">
-            <div className="map-info">
-              <div className="map-info-header">
-                <MapIcon />
-                <h4>{mapaActual.nombre}</h4>
+          <div className="bg-white p-6 md:p-8 rounded-b-2xl">
+            <div className="mb-6">
+              <div className="flex items-center mb-2">
+                <Map size={20} className="text-unahur-accent mr-3" />
+                <h4 className="text-xl font-bold text-dark-gray">{mapaActual.nombre}</h4>
               </div>
-              <p>{mapaActual.descripcion}</p>
+              <p className="text-medium-gray">{mapaActual.descripcion}</p>
             </div>
 
-            <div className="maps-grid">
-              <div>
-                <div className="map-display">
-                  <div className="map-image-container">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                <div className="bg-light-gray rounded-xl p-4 border border-gray-300">
+                  <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden bg-white">
                     <img
                       src={pisoActual.imagen}
                       alt={`Mapa de ${mapaActual.nombre} - ${pisoActual.nombre}`}
-                      className="map-image"
+                      className="w-full h-full object-contain p-4"
                     />
                   </div>
 
                   {mapaActual.pisos.length > 1 && (
-                    <div className="floor-buttons">
+                    <div className="flex justify-center gap-4 mt-4">
                       {mapaActual.pisos.map((piso) => (
                         <button
                           key={piso.id}
                           onClick={() => setPisoActivo(piso.id)}
-                          className={`floor-button ${pisoActivo === piso.id ? 'active' : 'inactive'}`}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                            pisoActivo === piso.id
+                              ? 'bg-unahur-green text-white'
+                              : 'bg-gray-200 text-medium-gray hover:bg-gray-300'
+                          }`}
                         >
                           {piso.nombre}
                         </button>
@@ -493,51 +433,51 @@ function App() {
                 </div>
               </div>
 
-              <div className="map-sidebar">
-                <h5 className="sidebar-title">
-                  <NavigationIcon />
+              <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
+                <h5 className="text-lg font-bold text-dark-gray mb-4 flex items-center">
+                  <Navigation size={20} className="text-unahur-green mr-2" />
                   Información de la Sede
                 </h5>
 
-                <div className="info-section">
-                  <h6>Ubicación:</h6>
-                  <p>
+                <div className="mb-6">
+                  <h6 className="font-semibold text-medium-gray text-sm mb-2">Ubicación:</h6>
+                  <p className="text-dark-gray text-sm">
                     {mapaActivo === 'origone'
                       ? 'Av. Origone 151, Hurlingham, Buenos Aires'
                       : 'Av. La Patria 123, Hurlingham, Buenos Aires'}
                   </p>
                 </div>
 
-                <div className="info-section">
-                  <h6>Servicios disponibles:</h6>
-                  <ul className="services-list">
+                <div className="mb-6">
+                  <h6 className="font-semibold text-medium-gray text-sm mb-2">Servicios disponibles:</h6>
+                  <ul className="space-y-2">
                     {mapaActual.servicios.map((servicio, index) => (
-                      <li key={index} className="service-item">
-                        <div className="service-indicator"></div>
-                        <span>{servicio}</span>
+                      <li key={index} className="flex items-center text-sm">
+                        <div className="w-2 h-2 rounded-full bg-unahur-green mr-3 flex-shrink-0"></div>
+                        <span className="text-dark-gray">{servicio}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
                 {resultado && resultado.edificio && (
-                  <div className="student-location">
+                  <div className="mt-6 p-4 rounded-lg bg-blue-50 border border-unahur-accent">
                     <div className="flex items-center mb-2">
-                      <div className="location-indicator"></div>
-                      <span className="font-semibold">Tu ubicación</span>
+                      <div className="w-3 h-3 rounded-full bg-unahur-green mr-2"></div>
+                      <span className="font-semibold text-dark-gray">Tu ubicación</span>
                     </div>
-                    <p className="location-text">
+                    <p className="text-dark-gray text-sm">
                       {resultado.edificio === (mapaActivo === 'origone' ? 'Origone' : 'La Patria') ? (
                         <>
-                          Estás cursando en esta sede: <span>{resultado.edificio}</span>
+                          Estás cursando en esta sede: <span className="font-semibold text-unahur-blue">{resultado.edificio}</span>
                           {resultado.piso && ` - ${resultado.piso}`}
                         </>
                       ) : (
                         <>
-                          Tu cursada se encuentra en: <span>{resultado.edificio}</span>
+                          Tu cursada se encuentra en: <span className="font-semibold text-unahur-blue">{resultado.edificio}</span>
                           {resultado.piso && ` - ${resultado.piso}`}
                           <br />
-                          <small style={{ color: '#718096', fontStyle: 'italic' }}>
+                          <small className="text-gray-500 italic text-xs">
                             (Selecciona "{resultado.edificio}" en los botones de arriba para ver ese mapa)
                           </small>
                         </>
@@ -552,40 +492,42 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-logo">
-            <img
-              src={logoUnahur}
-              alt="Logo UNAHUR"
-              className="footer-logo-image"
-            />
-            <div className="footer-info">
-              <h3>UNAHUR</h3>
-              <p>Universidad Nacional de Hurlingham</p>
-              <p className="footer-address">
-                Origone: Av. Origone 151, Hurlingham<br />
-                La Patria: Av. La Patria 123, Hurlingham
+      <footer className="py-8 border-t-8 border-[#5aa531] bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex items-center mb-6 md:mb-0">
+              <img
+                src={logoUnahur}
+                alt="Logo UNAHUR"
+                className="w-24 h-10 object-contain mr-4"
+              />
+              <div>
+                <h3 className="font-bold text-dark-gray">UNAHUR</h3>
+                <p className="text-medium-gray text-sm">Universidad Nacional de Hurlingham</p>
+                <p className="text-medium-gray text-sm mt-1">
+                  Origone: Av. Origone 151, Hurlingham<br />
+                  La Patria: Av. La Patria 123, Hurlingham
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center gap-4 mb-4">
+                <div className="w-10 h-10 rounded-full bg-unahur-green flex items-center justify-center">
+                  <MapPin size={20} className="text-white" />
+                </div>
+                <div className="w-10 h-10 rounded-full bg-unahur-accent flex items-center justify-center">
+                  <GraduationCap size={20} className="text-white" />
+                </div>
+                <div className="w-10 h-10 rounded-full bg-unahur-green flex items-center justify-center">
+                  <Building size={20} className="text-white" />
+                </div>
+              </div>
+              <p className="text-medium-gray text-sm">
+                Sistema Académico © {new Date().getFullYear()}<br />
+                <span className="font-medium">Universidad Nacional de Hurlingham</span>
               </p>
             </div>
-          </div>
-
-          <div className="footer-center">
-            <div className="icon-grid">
-              <div className="icon-circle green">
-                <MapPinIcon />
-              </div>
-              <div className="icon-circle blue">
-                <GraduationCapIcon />
-              </div>
-              <div className="icon-circle green">
-                <BuildingIcon />
-              </div>
-            </div>
-            <p className="footer-copyright">
-              Sistema Académico © {new Date().getFullYear()}<br />
-              <span>Universidad Nacional de Hurlingham</span>
-            </p>
           </div>
         </div>
       </footer>
