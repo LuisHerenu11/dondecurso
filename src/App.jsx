@@ -287,7 +287,7 @@ function App() {
                   </div>
                 )}
 
-                <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
+                {/* <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
                   <div className="flex items-center mb-4">
                     <div className="p-2 rounded-lg bg-unahur-accent mr-3">
                       <GraduationCap size={18} className="text-white" />
@@ -295,7 +295,7 @@ function App() {
                     <h4 className="font-bold text-dark-gray">Carrera</h4>
                   </div>
                   <p className="text-dark-gray text-lg font-medium">{resultado.carrera}</p>
-                </div>
+                </div> */}
 
                 <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-xl border border-light-gray">
                   <div className="flex items-center mb-4">
