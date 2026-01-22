@@ -1,14 +1,12 @@
 require('dotenv').config();
 const { google } = require('googleapis');
 
-// Función de limpieza de DNI
 function limpiarDNI(texto) {
     if (!texto) return "";
     return texto.toString().replace(/[^0-9]/g, ""); 
 }
 
 exports.handler = async function(event, context) {
-    // 1. Validaciones básicas
     if (event.httpMethod !== 'GET') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
@@ -21,8 +19,7 @@ exports.handler = async function(event, context) {
     const dniBuscado = limpiarDNI(query);
 
     try {
-        // 2. CONEXIÓN EN VIVO (Aquí está la magia)
-        // En lugar de leer data.json, nos autenticamos con Google ahora mismo.
+
         const auth = new google.auth.GoogleAuth({
             credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
             scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
@@ -33,7 +30,7 @@ exports.handler = async function(event, context) {
         // Rango de tu hoja de alumnos
         const RANGE = 'ALUMNADO!A2:J'; 
 
-        // Pedimos los datos a Google (esto tarda unos milisegundos más, pero es fresco)
+        //datos a Google 
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: process.env.SPREADSHEET_ID,
             range: RANGE,
@@ -45,7 +42,7 @@ exports.handler = async function(event, context) {
             return { statusCode: 404, body: JSON.stringify({ error: "La base de datos está vacía." }) };
         }
 
-        // 3. FILTRADO (Buscamos al alumno en los datos frescos)
+     
         const filasDelAlumno = rows.filter(row => {
             const dniFila = row[1] ? limpiarDNI(row[1]) : "";
             return dniFila === dniBuscado;
@@ -58,7 +55,7 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // 4. PROCESAMIENTO DE DATOS
+        
         const inscripciones = filasDelAlumno.map(row => {
             // Lógica de Días
             const diaRaw = row[5] || ""; 
@@ -87,7 +84,7 @@ exports.handler = async function(event, context) {
             };
         });
 
-        // 5. RESPUESTA FINAL
+        
         const respuesta = {
             alumno: filasDelAlumno[0][0] || "Sin Nombre",
             dni: filasDelAlumno[0][1].trim(),
