@@ -504,7 +504,7 @@ function App() {
                 <p className="text-medium-gray text-sm">Universidad Nacional de Hurlingham</p>
                 <p className="text-medium-gray text-sm mt-1">
                   Origone: Av. Origone 151, Hurlingham<br />
-                  La Patria: Av. La Patria 123, Hurlingham
+                  La Patria: Av. La Patria 3800, Hurlingham
                 </p>
               </div>
             </div>
