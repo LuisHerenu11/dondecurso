@@ -444,7 +444,7 @@ function App() {
                   <p className="text-dark-gray text-sm">
                     {mapaActivo === 'origone'
                       ? 'Av. Origone 151, Hurlingham, Buenos Aires'
-                      : 'Av. La Patria 123, Hurlingham, Buenos Aires'}
+                      : 'Av. La Patria 3800, Hurlingham, Buenos Aires'}
                   </p>
                 </div>
 
