@@ -12,7 +12,7 @@ async function run() {
 
         const sheets = google.sheets({ version: 'v4', auth });
         
-        // Leemos desde la A hasta la J (Edificio)
+      
         const RANGE = 'ALUMNADO!A2:J'; 
 
         const response = await sheets.spreadsheets.values.get({
@@ -44,17 +44,17 @@ async function run() {
         .filter(row => row[1] && row[3])
         .map(row => {
             
-            // 1. Identificamos el día para saber en qué propiedad del objeto guardarlo
+            // Identificamos el día para saber en qué propiedad del objeto guardarlo
             const diaRaw = row[5] || ""; 
             const diaKey = diaRaw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
-            // 2. CONCATENACIÓN: Unimos "Desde" (col 6) y "Hasta" (col 7)
+            // CONCATENACIÓN: Unimos "Desde" (col 6) y "Hasta" (col 7)
             // Resultado ejemplo: "8:00 - 12:00"
             const inicio = row[6] || "";
             const fin = row[7] || "";
             const horarioConcatenado = (inicio && fin) ? `${inicio} - ${fin}` : "A confirmar";
 
-            // 3. Estructura de horarios vacía
+            // Estructura de horarios vacía
             const horarios = {
                 lunes: "-",
                 martes: "-",
@@ -64,7 +64,7 @@ async function run() {
                 sabado: "-"
             };
 
-            // 4. Insertamos el horario concatenado solo en el día que corresponde
+            // Insertamos el horario concatenado solo en el día que corresponde
             if (horarios.hasOwnProperty(diaKey)) {
                 horarios[diaKey] = horarioConcatenado;
             }

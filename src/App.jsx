@@ -14,7 +14,7 @@ import {
   Home,
   IdCard,
   ChevronRight,
-  FileText // Icono nuevo para la tabla
+  FileText 
 } from 'lucide-react'
 
 import logoUnahur from './assets/logo-unahur.png'
@@ -25,7 +25,7 @@ import sedePatria from './assets/sede-la-patria.png'
 
 function App() {
   const [busqueda, setBusqueda] = useState('')
-  const [resultados, setResultados] = useState(null) // CAMBIO: Array en lugar de objeto único
+  const [resultados, setResultados] = useState(null) 
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [mapaActivo, setMapaActivo] = useState('origone')
@@ -79,7 +79,7 @@ function App() {
       const data = await response.json()
 
       if (response.ok) {
-        // LÓGICA: Aseguramos que sea un array
+        
         if (Array.isArray(data) && data.length > 0) {
           setResultados(data)
         } else if (data.dni) {
@@ -103,7 +103,7 @@ function App() {
     setError(null)
   }
 
-  // HELPER: Formatear horario limpio
+  
   const obtenerTextoHorario = (horariosObj) => {
     const dias = Object.entries(horariosObj).filter(([_, h]) => h !== '-')
     if (dias.length === 0) return 'A confirmar'
@@ -114,7 +114,7 @@ function App() {
     ))
   }
 
-  // HELPER: Detectar sede para linkear al mapa
+ 
   const detectarSede = (aulaTexto) => {
     if (!aulaTexto) return null
     const texto = aulaTexto.toLowerCase()
@@ -126,7 +126,7 @@ function App() {
   const mapaActual = mapas[mapaActivo] || mapas.origone
   const pisoActual = mapaActual.pisos.find(p => p.id === pisoActivo) || mapaActual.pisos[0]
 
-  // Datos del alumno (tomamos el primero ya que se repiten los datos personales)
+  // Datos del alumno 
   const alumnoDatos = resultados && resultados.length > 0 ? resultados[0] : null
 
   return (
@@ -257,7 +257,7 @@ function App() {
         {resultados && alumnoDatos && (
           <div className="bg-white rounded-2xl shadow-card p-6 md:p-8 mb-12 border border-light-gray">
             
-            {/* 1. Header del Alumno (Datos personales) */}
+            {/* Header del Alumno */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-6 border-b border-light-gray mb-8">
               <div className="flex items-center mb-4 lg:mb-0">
                 <div className="p-3 rounded-xl bg-unahur-green mr-4">
@@ -281,7 +281,7 @@ function App() {
                 Materias Inscriptas ({resultados.length})
               </h3>
 
-              {/* 2. TABLA DE MATERIAS (Diseño adaptado a tu estilo) */}
+              {/* TABLA DE MATERIAS  */}
               <div className="overflow-hidden rounded-xl border border-light-gray">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
@@ -360,7 +360,7 @@ function App() {
           </div>
         )}
 
-        {/* Maps Section (Tu código original sin cambios de estilo) */}
+        {/* Maps Section*/}
         <div id="seccion-mapas" className="bg-unahur-blue rounded-2xl shadow-card border border-light-gray mb-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 md:p-8 bg-unahur-blue rounded-t-2xl">
             <h3 className="text-2xl font-bold text-white mb-4 md:mb-0">
