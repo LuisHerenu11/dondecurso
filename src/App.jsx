@@ -79,11 +79,9 @@ function App() {
       const data = await response.json()
 
       if (response.ok) {
-        
-        if (Array.isArray(data) && data.length > 0) {
+        // CAMBIO: Verificamos si la respuesta tiene inscripciones
+        if (data.inscripciones && data.inscripciones.length > 0) {
           setResultados(data)
-        } else if (data.dni) {
-          setResultados([data])
         } else {
           setError('No se encontraron inscripciones.')
         }
@@ -105,6 +103,7 @@ function App() {
 
   
   const obtenerTextoHorario = (horariosObj) => {
+    if (!horariosObj) return 'A confirmar' // Pequeña seguridad extra
     const dias = Object.entries(horariosObj).filter(([_, h]) => h !== '-')
     if (dias.length === 0) return 'A confirmar'
     return dias.map(([dia, hora]) => (
@@ -126,8 +125,8 @@ function App() {
   const mapaActual = mapas[mapaActivo] || mapas.origone
   const pisoActual = mapaActual.pisos.find(p => p.id === pisoActivo) || mapaActual.pisos[0]
 
-  // Datos del alumno 
-  const alumnoDatos = resultados && resultados.length > 0 ? resultados[0] : null
+  // CAMBIO: resultados ya es el objeto del alumno, no un array
+  const alumnoDatos = resultados; 
 
   return (
     <div className="min-h-screen bg-light-bg">
@@ -254,7 +253,8 @@ function App() {
         </div>
 
         {/* Results Card */}
-        {resultados && alumnoDatos && (
+        {/* CAMBIO: Checkeamos resultados.inscripciones */}
+        {resultados && alumnoDatos && resultados.inscripciones && (
           <div className="bg-white rounded-2xl shadow-card p-6 md:p-8 mb-12 border border-light-gray">
             
             {/* Header del Alumno */}
@@ -264,6 +264,7 @@ function App() {
                    <User size={24} className="text-white" />
                 </div>
                 <div>
+                    {/* CAMBIO: Usamos alumnoDatos.alumno directo */}
                     <h2 className="text-2xl md:text-3xl font-bold text-dark-gray capitalize">{alumnoDatos.alumno}</h2>
                     <p className="text-medium-gray text-lg mt-1">Estudiante Regular</p>
                 </div>
@@ -278,7 +279,8 @@ function App() {
             <div className="mb-8">
               <h3 className="text-xl font-bold text-dark-gray mb-6 pb-3 border-b border-light-gray flex items-center">
                 <BookOpen size={20} className="text-unahur-green mr-3" />
-                Materias Inscriptas ({resultados.length})
+                {/* CAMBIO: Contador de materias desde inscripciones.length */}
+                Materias Inscriptas ({resultados.inscripciones.length})
               </h3>
 
               {/* TABLA DE MATERIAS  */}
@@ -295,7 +297,8 @@ function App() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-light-gray bg-white">
-                      {resultados.map((materia, index) => {
+                      {/* CAMBIO: Mapeamos sobre resultados.inscripciones */}
+                      {resultados.inscripciones.map((materia, index) => {
                         const sedeSugerida = detectarSede(materia.aula);
                         
                         return (
