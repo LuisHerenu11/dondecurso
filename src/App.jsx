@@ -239,7 +239,7 @@ function App() {
 
         {/* Results Card */}
         {resultados && alumnoDatos && resultados.inscripciones && (
-          <div className="bg-white rounded-2xl shadow-card p-6 md:p-8 mb-12 border border-light-gray w-full">
+          <div className="bg-white rounded-2xl shadow-card p-4 md:p-8 mb-12 border border-light-gray w-full max-w-[1920px] mx-auto">
             
             {/* Header del Alumno */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-6 border-b border-light-gray mb-8">
@@ -249,7 +249,6 @@ function App() {
                 </div>
                 <div>
                     <h2 className="text-2xl md:text-3xl font-bold text-dark-gray capitalize">{alumnoDatos.alumno}</h2>
-                    <p className="text-medium-gray text-lg mt-1">Estudiante Regular</p>
                 </div>
               </div>
               
@@ -265,25 +264,23 @@ function App() {
                 Materias Inscriptas ({resultados.inscripciones.length})
               </h3>
 
-              {/* TABLA DE MATERIAS MODIFICADA */}
+              {/* TABLA MODIFICADA */}
               <div className="overflow-hidden rounded-xl border border-light-gray">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
+                  <table className="w-full min-w-[1200px] lg:min-w-full text-left border-collapse">
                     <thead>
-                     
                       <tr className="bg-gray-50 text-medium-gray text-sm uppercase font-bold tracking-wider border-b border-light-gray">
-                        <th className="px-6 py-4 w-[25%]">Materia</th>
-                        <th className="px-6 py-4 w-[10%]">Comisión</th>
-                        <th className="px-6 py-4 w-[20%]">Docente</th>
-                        <th className="px-6 py-4 w-[15%]">Días de Cursada</th> 
-                        <th className="px-6 py-4 w-[15%]">Horario</th>        
-                        <th className="px-6 py-4 w-[15%]">Aula</th>
+                        <th className="px-4 py-4 lg:px-6 lg:py-4 w-[22%] lg:w-[25%]">Materia</th>
+                        <th className="px-4 py-4 lg:px-6 lg:py-4 w-[8%] lg:w-[10%]">Comisión</th>
+                        <th className="px-4 py-4 lg:px-6 lg:py-4 w-[20%] lg:w-[20%]">Docente</th>
+                        <th className="px-4 py-4 lg:px-6 lg:py-4 w-[15%] lg:w-[15%]">Días de Cursada</th> 
+                        <th className="px-4 py-4 lg:px-6 lg:py-4 w-[15%] lg:w-[15%]">Horario</th>        
+                        <th className="px-4 py-4 lg:px-6 lg:py-4 w-[20%] lg:w-[15%]">Aula</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-light-gray bg-white">
                       {resultados.inscripciones.map((materia, index) => {
                         const sedeSugerida = detectarSede(materia.aula);
-                        
                         
                         const diasActivos = materia.horarios 
                           ? Object.entries(materia.horarios).filter(([_, h]) => h !== '-')
@@ -291,53 +288,59 @@ function App() {
 
                         return (
                           <tr key={index} className="hover:bg-blue-50/30 transition-colors">
-                            <td className="px-6 py-5">
-                              <span className="font-bold text-dark-gray text-base block">{materia.materia}</span>
+                            <td className="px-4 py-4 lg:px-6 lg:py-5">
+                              <span className="font-bold text-dark-gray text-sm lg:text-base block break-words">
+                                {materia.materia}
+                              </span>
                             </td>
-                            <td className="px-6 py-5">
-                              <span className="inline-flex items-center px-3 py-1 rounded-full bg-unahur-accent/10 text-unahur-blue text-sm font-bold">
+                            <td className="px-4 py-4 lg:px-6 lg:py-5">
+                              <span className="inline-flex items-center px-2 py-1 lg:px-3 lg:py-1 rounded-full bg-unahur-accent/10 text-unahur-blue text-xs lg:text-sm font-bold min-w-[60px] justify-center">
                                 {materia.comision}
                               </span>
                             </td>
-                            <td className="px-6 py-5 text-dark-gray text-sm">
-                              {materia.docente}
+                            <td className="px-4 py-4 lg:px-6 lg:py-5 text-dark-gray text-sm">
+                              <div className="break-words max-w-[200px]">
+                                {materia.docente}
+                              </div>
                             </td>
                             
                             {/* COLUMNA DÍAS */}
-                            <td className="px-6 py-5">
-                              <div className="flex flex-col gap-1">
+                            <td className="px-4 py-4 lg:px-6 lg:py-5">
+                              <div className="flex flex-col gap-1 min-w-[120px]">
                                 {diasActivos.length > 0 ? (
                                   diasActivos.map(([dia, _]) => (
-                                    <span key={dia} className="capitalize font-bold text-unahur-green flex items-center gap-1">
-                                      <Calendar size={14} /> {dia}
+                                    <span key={dia} className="capitalize font-bold text-unahur-green flex items-center gap-1 text-xs lg:text-sm">
+                                      <Calendar size={12} className="flex-shrink-0" /> 
+                                      <span className="truncate">{dia}</span>
                                     </span>
                                   ))
                                 ) : (
-                                  <span className="text-medium-gray text-sm">A confirmar</span>
+                                  <span className="text-medium-gray text-xs lg:text-sm">A confirmar</span>
                                 )}
                               </div>
                             </td>
 
                             {/* COLUMNA HORARIOS */}
-                            <td className="px-6 py-5">
-                              <div className="flex flex-col gap-1">
+                            <td className="px-4 py-4 lg:px-6 lg:py-5">
+                              <div className="flex flex-col gap-1 min-w-[120px]">
                                 {diasActivos.length > 0 ? (
                                   diasActivos.map(([dia, hora]) => (
-                                    <span key={dia} className="text-dark-gray text-sm font-medium flex items-center gap-1">
-                                      <Clock size={14} className="text-medium-gray" /> {hora}
+                                    <span key={dia} className="text-dark-gray text-xs lg:text-sm font-medium flex items-center gap-1">
+                                      <Clock size={12} className="text-medium-gray flex-shrink-0" /> 
+                                      <span className="truncate">{hora}</span>
                                     </span>
                                   ))
                                 ) : (
-                                  <span>-</span>
+                                  <span className="text-medium-gray text-xs">-</span>
                                 )}
                               </div>
                             </td>
 
-                            <td className="px-6 py-5">
+                            <td className="px-4 py-4 lg:px-6 lg:py-5">
                               <div className="flex flex-col items-start">
-                                <span className="font-bold text-dark-gray flex items-center gap-2">
-                                  <MapPin size={16} className="text-error-red" />
-                                  {materia.aula}
+                                <span className="font-bold text-dark-gray flex items-center gap-2 text-sm lg:text-base">
+                                  <MapPin size={14} className="text-error-red flex-shrink-0" />
+                                  <span className="break-words">{materia.aula}</span>
                                 </span>
                                 {sedeSugerida && (
                                   <button
@@ -362,8 +365,8 @@ function App() {
             </div>
             
             {/* Mensaje Informativo Inferior */}
-            <div className="bg-blue-50 border border-unahur-accent/30 rounded-lg p-4 flex items-start gap-3">
-               <div className="p-1 bg-unahur-accent rounded-full text-white mt-0.5">
+            <div className="bg-blue-50 border border-unahur-accent/30 rounded-lg p-4 flex items-start gap-3 mt-6">
+               <div className="p-1 bg-unahur-accent rounded-full text-white mt-0.5 flex-shrink-0">
                   <Users size={14} />
                </div>
                <div>
@@ -376,8 +379,8 @@ function App() {
           </div>
         )}
 
-        {/* Maps Section*/}
-        <div id="seccion-mapas" className="bg-unahur-blue rounded-2xl shadow-card border border-light-gray mb-12">
+        {/* Maps Section */}
+        <div id="seccion-mapas" className="bg-unahur-blue rounded-2xl shadow-card border border-light-gray mb-12 w-full max-w-[1920px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 md:p-8 bg-unahur-blue rounded-t-2xl">
             <h3 className="text-2xl font-bold text-white mb-4 md:mb-0">
               <span className="text-unahur-light-green">Mapas de Sedes</span> UNAHUR
@@ -426,7 +429,7 @@ function App() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <div className="bg-light-gray rounded-xl p-4 border border-gray-300">
-                  <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden bg-white">
+                  <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden bg-white">
                     <img
                       src={pisoActual.imagen}
                       alt={`Mapa de ${mapaActual.nombre} - ${pisoActual.nombre}`}
