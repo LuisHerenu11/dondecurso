@@ -80,7 +80,7 @@ exports.handler = async function(event, context) {
                 comision: row[3].trim(),
                 docente: row[4] || "A designar",
                 horarios: horarios,
-                aula: `${row[8] || ""} - ${row[9] || ""}`.trim()
+                aula: `${row[8] || ""}  ${row[9] || ""}`.trim()
             };
         });
 
