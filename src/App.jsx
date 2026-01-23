@@ -410,7 +410,7 @@ function App() {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-8xl mx-auto px-2 py-4 md:px-4 lg:px-44 w-full">
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center p-4 rounded-full bg-unahur-blue mb-4">
