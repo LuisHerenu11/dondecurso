@@ -178,7 +178,7 @@ function App() {
                           {materia.materia}
                         </span>
                         <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-unahur-accent/10 text-unahur-blue text-sm font-bold w-fit">
-                          Comisión {materia.comision}
+                          {materia.comision}
                         </span>
                       </div>
                     </td>
@@ -220,8 +220,7 @@ function App() {
 
                     <td className="px-8 py-6 align-top">
                       <div className="flex flex-col items-start gap-2">
-                        <span className="font-bold text-dark-gray flex items-center gap-3 text-xl">
-                          <MapPin size={20} className="text-error-red flex-shrink-0" />
+                        <span className="font-bold text-dark-gray flex items-center gap-3 text-md">
                           <span>{materia.aula}</span>
                         </span>
                         {sedeSugerida && (
@@ -233,7 +232,6 @@ function App() {
                             }}
                             className="text-base text-unahur-blue hover:underline flex items-center gap-2 font-medium"
                           >
-                            Ver mapa <Navigation size={14} />
                           </button>
                         )}
                       </div>
