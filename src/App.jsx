@@ -266,7 +266,7 @@ function App() {
                     <h4 className="font-bold text-dark-gray text-xl mb-3">{materia.materia}</h4>
                     <div className="flex flex-wrap items-center gap-3">
                       <span className="inline-flex items-center px-4 py-2 rounded-full bg-unahur-accent/10 text-unahur-blue text-base font-bold">
-                        Comisión {materia.comision}
+                        {materia.comision}
                       </span>
                       {sedeSugerida && (
                         <button
@@ -277,7 +277,6 @@ function App() {
                           }}
                           className="text-sm text-unahur-blue hover:underline flex items-center gap-1 font-medium"
                         >
-                          Ver mapa <Navigation size={12} />
                         </button>
                       )}
                     </div>
@@ -325,8 +324,7 @@ function App() {
                 <div className="border-t pt-4">
                   <p className="text-base text-medium-gray mb-2 font-semibold">Aula:</p>
                   <div className="flex items-center gap-3">
-                    <MapPin size={18} className="text-error-red flex-shrink-0" />
-                    <span className="font-bold text-dark-gray text-lg">{materia.aula}</span>
+                    <span className="font-bold text-dark-gray text-md mb-3">{materia.aula}</span>
                   </div>
                 </div>
               </div>
