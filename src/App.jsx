@@ -34,13 +34,11 @@ function App() {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
 
-
   const [mostrarAyudaGestion, setMostrarAyudaGestion] = useState(false)
 
   const [mapaActivo, setMapaActivo] = useState('origone')
   const [pisoActivo, setPisoActivo] = useState('baja')
   const [imagenAmpliada, setImagenAmpliada] = useState(null)
-
 
   const mapas = useMemo(() => ({
     origone: {
@@ -81,24 +79,10 @@ function App() {
       return
     }
 
-    // se verifica caché de sesión para reducir llamadas al servidor
-    const cacheKey = `search_${busqueda.trim()}`;
-    const cachedData = sessionStorage.getItem(cacheKey);
-
     setLoading(true)
     setError(null)
     setResultados(null)
     setMostrarAyudaGestion(false)
-
-    if (cachedData) {
-
-      setTimeout(() => {
-        const data = JSON.parse(cachedData);
-        setResultados(data);
-        setLoading(false);
-      }, 300);
-      return;
-    }
 
     try {
       const response = await fetch(`/.netlify/functions/consultar?q=${encodeURIComponent(busqueda)}`)
@@ -107,14 +91,11 @@ function App() {
       if (response.ok) {
         if (data.inscripciones && data.inscripciones.length > 0) {
           setResultados(data)
-          // Guardar en caché 
-          sessionStorage.setItem(cacheKey, JSON.stringify(data));
         } else {
           setError('No se encontraron inscripciones asociadas a este documento.')
           setMostrarAyudaGestion(true)
         }
       } else {
-        // 404 , mostramos el mensaje de ayuda
         setError(data.error || 'No pudimos encontrar tus datos.')
         setMostrarAyudaGestion(true)
       }
@@ -132,7 +113,6 @@ function App() {
     setMostrarAyudaGestion(false)
   }
 
-
   const detectarSede = useCallback((aulaTexto) => {
     if (!aulaTexto) return null
     const texto = aulaTexto.toLowerCase()
@@ -144,11 +124,10 @@ function App() {
   const mapaActual = mapas[mapaActivo] || mapas.origone
   const pisoActual = mapaActual.pisos.find(p => p.id === pisoActivo) || mapaActual.pisos[0]
 
-  const alumnoDatos = resultados;
-
+  const alumnoDatos = resultados
 
   const renderDesktopTable = useMemo(() => {
-    if (!resultados) return null;
+    if (!resultados) return null
     return (
       <div className="hidden lg:block overflow-hidden rounded-xl border border-light-gray w-full">
         <div className="overflow-x-auto w-full">
@@ -164,11 +143,11 @@ function App() {
             </thead>
             <tbody className="divide-y divide-light-gray bg-white">
               {resultados.inscripciones.map((materia, index) => {
-                const sedeSugerida = detectarSede(materia.aula);
+                const sedeSugerida = detectarSede(materia.aula)
 
                 const diasActivos = materia.horarios
                   ? Object.entries(materia.horarios).filter(([_, h]) => h !== '-')
-                  : [];
+                  : []
 
                 return (
                   <tr key={`${materia.comision}-${index}`} className="hover:bg-blue-50/30 transition-colors">
@@ -226,9 +205,9 @@ function App() {
                         {sedeSugerida && (
                           <button
                             onClick={() => {
-                              setMapaActivo(sedeSugerida);
-                              const el = document.getElementById('seccion-mapas');
-                              if (el) el.scrollIntoView({ behavior: 'smooth' });
+                              setMapaActivo(sedeSugerida)
+                              const el = document.getElementById('seccion-mapas')
+                              if (el) el.scrollIntoView({ behavior: 'smooth' })
                             }}
                             className="text-base text-unahur-blue hover:underline flex items-center gap-2 font-medium"
                           >
@@ -244,17 +223,17 @@ function App() {
         </div>
       </div>
     )
-  }, [resultados, detectarSede]);
+  }, [resultados, detectarSede])
 
   const renderMobileCards = useMemo(() => {
-    if (!resultados) return null;
+    if (!resultados) return null
     return (
       <div className="lg:hidden space-y-6">
         {resultados.inscripciones.map((materia, index) => {
-          const sedeSugerida = detectarSede(materia.aula);
+          const sedeSugerida = detectarSede(materia.aula)
           const diasActivos = materia.horarios
             ? Object.entries(materia.horarios).filter(([_, h]) => h !== '-')
-            : [];
+            : []
 
           return (
             <div key={`${materia.comision}-${index}`} className="bg-white rounded-xl border border-light-gray p-5 shadow-sm hover:shadow-md transition-shadow">
@@ -269,9 +248,9 @@ function App() {
                       {sedeSugerida && (
                         <button
                           onClick={() => {
-                            setMapaActivo(sedeSugerida);
-                            const el = document.getElementById('seccion-mapas');
-                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                            setMapaActivo(sedeSugerida)
+                            const el = document.getElementById('seccion-mapas')
+                            if (el) el.scrollIntoView({ behavior: 'smooth' })
                           }}
                           className="text-sm text-unahur-blue hover:underline flex items-center gap-1 font-medium"
                         >
@@ -331,7 +310,7 @@ function App() {
         })}
       </div>
     )
-  }, [resultados, detectarSede]);
+  }, [resultados, detectarSede])
 
   return (
     <div className="min-h-screen bg-light-bg">
