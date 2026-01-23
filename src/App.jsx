@@ -30,18 +30,18 @@ import sedePatria from './assets/sede-la-patria.png'
 
 function App() {
   const [busqueda, setBusqueda] = useState('')
-  const [resultados, setResultados] = useState(null) 
+  const [resultados, setResultados] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
-  
- 
+
+
   const [mostrarAyudaGestion, setMostrarAyudaGestion] = useState(false)
 
   const [mapaActivo, setMapaActivo] = useState('origone')
   const [pisoActivo, setPisoActivo] = useState('baja')
   const [imagenAmpliada, setImagenAmpliada] = useState(null)
 
-  
+
   const mapas = useMemo(() => ({
     origone: {
       nombre: 'Origone',
@@ -91,13 +91,13 @@ function App() {
     setMostrarAyudaGestion(false)
 
     if (cachedData) {
-        
-        setTimeout(() => {
-            const data = JSON.parse(cachedData);
-            setResultados(data);
-            setLoading(false);
-        }, 300);
-        return;
+
+      setTimeout(() => {
+        const data = JSON.parse(cachedData);
+        setResultados(data);
+        setLoading(false);
+      }, 300);
+      return;
     }
 
     try {
@@ -132,7 +132,7 @@ function App() {
     setMostrarAyudaGestion(false)
   }
 
-  
+
   const detectarSede = useCallback((aulaTexto) => {
     if (!aulaTexto) return null
     const texto = aulaTexto.toLowerCase()
@@ -144,198 +144,198 @@ function App() {
   const mapaActual = mapas[mapaActivo] || mapas.origone
   const pisoActual = mapaActual.pisos.find(p => p.id === pisoActivo) || mapaActual.pisos[0]
 
-  const alumnoDatos = resultados; 
+  const alumnoDatos = resultados;
 
- 
+
   const renderDesktopTable = useMemo(() => {
     if (!resultados) return null;
     return (
-    <div className="hidden lg:block overflow-hidden rounded-xl border border-light-gray w-full">
-      <div className="overflow-x-auto w-full">
-        <table className="w-full text-left border-collapse table-fixed">
-          <thead>
-            <tr className="bg-gray-50 text-medium-gray text-sm uppercase font-bold tracking-wider border-b border-light-gray">
-              <th className="px-6 py-4 w-[28%] min-w-[300px]">Materia</th>
-              <th className="px-6 py-4 w-[12%] text-center min-w-[120px]">Comisión</th>
-              <th className="px-6 py-4 w-[22%] min-w-[250px]">Docente</th>
-              <th className="px-6 py-4 w-[18%] min-w-[180px]">Días de Cursada</th>
-              <th className="px-6 py-4 w-[15%] min-w-[160px]">Horario</th>
-              <th className="px-6 py-4 w-[20%] min-w-[200px]">Aula</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-light-gray bg-white">
-            {resultados.inscripciones.map((materia, index) => {
-              const sedeSugerida = detectarSede(materia.aula);
-              
-              const diasActivos = materia.horarios 
-                ? Object.entries(materia.horarios).filter(([_, h]) => h !== '-')
-                : [];
+      <div className="hidden lg:block overflow-hidden rounded-xl border border-light-gray w-full">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-50 text-medium-gray text-sm uppercase font-bold tracking-wider border-b border-light-gray">
+                <th className="px-8 py-4">Materia</th>
+                <th className="px-8 py-4">Docente</th>
+                <th className="px-8 py-4">Días de Cursada</th>
+                <th className="px-8 py-4">Horario</th>
+                <th className="px-8 py-4">Aula</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-light-gray bg-white">
+              {resultados.inscripciones.map((materia, index) => {
+                const sedeSugerida = detectarSede(materia.aula);
 
-              return (
-                <tr key={`${materia.comision}-${index}`} className="hover:bg-blue-50/30 transition-colors">
-                  <td className="px-6 py-5 align-top">
-                    <span className="font-bold text-dark-gray text-xl block break-words leading-relaxed pr-2">
-                      {materia.materia}
-                    </span>
-                  </td>
-                  <td className="px-6 py-5 text-center align-top">
-                    <span className="inline-flex items-center px-5 py-3 rounded-full bg-unahur-accent/10 text-unahur-blue text-xl font-bold min-w-[100px] justify-center">
-                      {materia.comision}
-                    </span>
-                  </td>
-                  <td className="px-6 py-5 text-dark-gray text-lg align-top">
-                    <div className="break-words max-w-full leading-relaxed pr-2">
-                      {materia.docente}
-                    </div>
-                  </td>
-                  
-                  <td className="px-6 py-5 align-top">
-                    <div className="flex flex-col gap-3">
-                      {diasActivos.length > 0 ? (
-                        diasActivos.map(([dia, _]) => (
-                          <span key={dia} className="capitalize font-bold text-unahur-green flex items-center gap-3 text-lg">
-                            <Calendar size={18} className="flex-shrink-0" /> 
-                            <span className="truncate">{dia}</span>
-                          </span>
-                        ))
-                      ) : (
-                        <span className="text-medium-gray text-lg">A confirmar</span>
-                      )}
-                    </div>
-                  </td>
+                const diasActivos = materia.horarios
+                  ? Object.entries(materia.horarios).filter(([_, h]) => h !== '-')
+                  : [];
 
-                  <td className="px-6 py-5 align-top">
-                    <div className="flex flex-col gap-3">
-                      {diasActivos.length > 0 ? (
-                        diasActivos.map(([dia, hora]) => (
-                          <span key={dia} className="text-dark-gray text-lg font-medium flex items-center gap-3">
-                            <Clock size={18} className="text-medium-gray flex-shrink-0" /> 
-                            <span className="truncate">{hora}</span>
-                          </span>
-                        ))
-                      ) : (
-                        <span className="text-medium-gray text-lg">-</span>
-                      )}
-                    </div>
-                  </td>
+                return (
+                  <tr key={`${materia.comision}-${index}`} className="hover:bg-blue-50/30 transition-colors">
+                    <td className="px-8 py-6 align-top">
+                      <div className="flex flex-col gap-2">
+                        <span className="font-bold text-dark-gray text-xl block leading-relaxed">
+                          {materia.materia}
+                        </span>
+                        <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-unahur-accent/10 text-unahur-blue text-sm font-bold w-fit">
+                          Comisión {materia.comision}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-8 py-6 text-dark-gray text-lg align-top">
+                      <div className="leading-relaxed">
+                        {materia.docente}
+                      </div>
+                    </td>
 
-                  <td className="px-6 py-5 align-top">
-                    <div className="flex flex-col items-start">
-                      <span className="font-bold text-dark-gray flex items-center gap-3 text-xl">
-                        <MapPin size={20} className="text-error-red flex-shrink-0" />
-                        <span className="break-words pr-2">{materia.aula}</span>
+                    <td className="px-8 py-6 align-top">
+                      <div className="flex flex-col gap-3">
+                        {diasActivos.length > 0 ? (
+                          diasActivos.map(([dia, _]) => (
+                            <span key={dia} className="capitalize font-bold text-unahur-green flex items-center gap-3 text-lg">
+                              <Calendar size={18} className="flex-shrink-0" />
+                              <span>{dia}</span>
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-medium-gray text-lg">A confirmar</span>
+                        )}
+                      </div>
+                    </td>
+
+                    <td className="px-8 py-6 align-top">
+                      <div className="flex flex-col gap-3">
+                        {diasActivos.length > 0 ? (
+                          diasActivos.map(([dia, hora]) => (
+                            <span key={dia} className="text-dark-gray text-lg font-medium flex items-center gap-3">
+                              <Clock size={18} className="text-medium-gray flex-shrink-0" />
+                              <span>{hora}</span>
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-medium-gray text-lg">-</span>
+                        )}
+                      </div>
+                    </td>
+
+                    <td className="px-8 py-6 align-top">
+                      <div className="flex flex-col items-start gap-2">
+                        <span className="font-bold text-dark-gray flex items-center gap-3 text-xl">
+                          <MapPin size={20} className="text-error-red flex-shrink-0" />
+                          <span>{materia.aula}</span>
+                        </span>
+                        {sedeSugerida && (
+                          <button
+                            onClick={() => {
+                              setMapaActivo(sedeSugerida);
+                              const el = document.getElementById('seccion-mapas');
+                              if (el) el.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                            className="text-base text-unahur-blue hover:underline flex items-center gap-2 font-medium"
+                          >
+                            Ver mapa <Navigation size={14} />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )
+  }, [resultados, detectarSede]);
+
+  const renderMobileCards = useMemo(() => {
+    if (!resultados) return null;
+    return (
+      <div className="lg:hidden space-y-6">
+        {resultados.inscripciones.map((materia, index) => {
+          const sedeSugerida = detectarSede(materia.aula);
+          const diasActivos = materia.horarios
+            ? Object.entries(materia.horarios).filter(([_, h]) => h !== '-')
+            : [];
+
+          return (
+            <div key={`${materia.comision}-${index}`} className="bg-white rounded-xl border border-light-gray p-5 shadow-sm hover:shadow-md transition-shadow">
+              <div className="space-y-5">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <h4 className="font-bold text-dark-gray text-xl mb-3">{materia.materia}</h4>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="inline-flex items-center px-4 py-2 rounded-full bg-unahur-accent/10 text-unahur-blue text-base font-bold">
+                        Comisión {materia.comision}
                       </span>
                       {sedeSugerida && (
                         <button
                           onClick={() => {
                             setMapaActivo(sedeSugerida);
                             const el = document.getElementById('seccion-mapas');
-                            if(el) el.scrollIntoView({ behavior: 'smooth' });
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
                           }}
-                          className="text-base text-unahur-blue hover:underline mt-3 flex items-center gap-2 font-medium"
+                          className="text-sm text-unahur-blue hover:underline flex items-center gap-1 font-medium"
                         >
-                          Ver mapa <Navigation size={14} />
+                          Ver mapa <Navigation size={12} />
                         </button>
                       )}
                     </div>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  )}, [resultados, detectarSede]);
-
- 
-  const renderMobileCards = useMemo(() => {
-    if (!resultados) return null;
-    return (
-    <div className="lg:hidden space-y-6">
-      {resultados.inscripciones.map((materia, index) => {
-        const sedeSugerida = detectarSede(materia.aula);
-        const diasActivos = materia.horarios 
-          ? Object.entries(materia.horarios).filter(([_, h]) => h !== '-')
-          : [];
-
-        return (
-          <div key={`${materia.comision}-${index}`} className="bg-white rounded-xl border border-light-gray p-5 shadow-sm hover:shadow-md transition-shadow">
-            <div className="space-y-5">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <h4 className="font-bold text-dark-gray text-xl mb-3">{materia.materia}</h4>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center px-4 py-2 rounded-full bg-unahur-accent/10 text-unahur-blue text-base font-bold">
-                      Comisión {materia.comision}
-                    </span>
-                    {sedeSugerida && (
-                      <button
-                        onClick={() => {
-                          setMapaActivo(sedeSugerida);
-                          const el = document.getElementById('seccion-mapas');
-                          if(el) el.scrollIntoView({ behavior: 'smooth' });
-                        }}
-                        className="text-sm text-unahur-blue hover:underline flex items-center gap-1 font-medium"
-                      >
-                        Ver mapa <Navigation size={12} />
-                      </button>
-                    )}
                   </div>
                 </div>
-              </div>
 
-              <div className="border-t pt-4">
-                <p className="text-base text-medium-gray mb-2 font-semibold">Docente:</p>
-                <p className="text-dark-gray font-medium text-lg">{materia.docente}</p>
-              </div>
+                <div className="border-t pt-4">
+                  <p className="text-base text-medium-gray mb-2 font-semibold">Docente:</p>
+                  <p className="text-dark-gray font-medium text-lg">{materia.docente}</p>
+                </div>
 
-              <div className="grid grid-cols-2 gap-5">
-                <div>
-                  <p className="text-base text-medium-gray mb-3 font-semibold">Días:</p>
-                  <div className="space-y-2">
-                    {diasActivos.length > 0 ? (
-                      diasActivos.map(([dia, _]) => (
-                        <div key={dia} className="flex items-center gap-3">
-                          <Calendar size={16} className="text-unahur-green flex-shrink-0" />
-                          <span className="capitalize text-dark-gray font-medium text-base">{dia}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <span className="text-medium-gray text-base">A confirmar</span>
-                    )}
+                <div className="grid grid-cols-2 gap-5">
+                  <div>
+                    <p className="text-base text-medium-gray mb-3 font-semibold">Días:</p>
+                    <div className="space-y-2">
+                      {diasActivos.length > 0 ? (
+                        diasActivos.map(([dia, _]) => (
+                          <div key={dia} className="flex items-center gap-3">
+                            <Calendar size={16} className="text-unahur-green flex-shrink-0" />
+                            <span className="capitalize text-dark-gray font-medium text-base">{dia}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <span className="text-medium-gray text-base">A confirmar</span>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-base text-medium-gray mb-3 font-semibold">Horarios:</p>
+                    <div className="space-y-2">
+                      {diasActivos.length > 0 ? (
+                        diasActivos.map(([dia, hora]) => (
+                          <div key={dia} className="flex items-center gap-3">
+                            <Clock size={16} className="text-medium-gray flex-shrink-0" />
+                            <span className="text-dark-gray font-medium text-base">{hora}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <span className="text-medium-gray text-base">-</span>
+                      )}
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <p className="text-base text-medium-gray mb-3 font-semibold">Horarios:</p>
-                  <div className="space-y-2">
-                    {diasActivos.length > 0 ? (
-                      diasActivos.map(([dia, hora]) => (
-                        <div key={dia} className="flex items-center gap-3">
-                          <Clock size={16} className="text-medium-gray flex-shrink-0" />
-                          <span className="text-dark-gray font-medium text-base">{hora}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <span className="text-medium-gray text-base">-</span>
-                    )}
-                  </div>
-                </div>
-              </div>
 
-              <div className="border-t pt-4">
-                <p className="text-base text-medium-gray mb-2 font-semibold">Aula:</p>
-                <div className="flex items-center gap-3">
-                  <MapPin size={18} className="text-error-red flex-shrink-0" />
-                  <span className="font-bold text-dark-gray text-lg">{materia.aula}</span>
+                <div className="border-t pt-4">
+                  <p className="text-base text-medium-gray mb-2 font-semibold">Aula:</p>
+                  <div className="flex items-center gap-3">
+                    <MapPin size={18} className="text-error-red flex-shrink-0" />
+                    <span className="font-bold text-dark-gray text-lg">{materia.aula}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )
-      })}
-    </div>
-  )}, [resultados, detectarSede]);
+          )
+        })}
+      </div>
+    )
+  }, [resultados, detectarSede]);
 
   return (
     <div className="min-h-screen bg-light-bg">
@@ -488,31 +488,31 @@ function App() {
               </div>
 
               {mostrarAyudaGestion && (
-                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 shadow-sm">
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
-                       <div className="bg-yellow-100 p-3 rounded-full text-yellow-700">
-                          <HelpCircle size={32} />
-                       </div>
-                       <div>
-                          <h4 className="text-xl font-bold text-gray-800">¿No encontrás tus datos o son incorrectos?</h4>
-                          <p className="text-gray-600 mt-1">Es posible que la inscripción no se haya procesado correctamente o falte documentación.</p>
-                       </div>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 shadow-sm">
+                  <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
+                    <div className="bg-yellow-100 p-3 rounded-full text-yellow-700">
+                      <HelpCircle size={32} />
                     </div>
-                    
-                    <div className="bg-white p-4 rounded-lg border border-yellow-100">
-                       <p className="text-lg text-gray-800 font-medium mb-2">Por favor, acércate a <span className="text-unahur-green font-bold">Gestión Estudiantil</span>:</p>
-                       <ul className="space-y-2 text-gray-700">
-                          <li className="flex items-center gap-2">
-                             <MapPin size={18} className="text-unahur-blue"/> 
-                             Sede Origone (Planta Baja)
-                          </li>
-                          <li className="flex items-center gap-2">
-                             <Clock size={18} className="text-unahur-blue"/> 
-                             Lunes a Viernes de 9 a 20 hs
-                          </li>
-                       </ul>
+                    <div>
+                      <h4 className="text-xl font-bold text-gray-800">¿No encontrás tus datos o son incorrectos?</h4>
+                      <p className="text-gray-600 mt-1">Es posible que la inscripción no se haya procesado correctamente o falte documentación.</p>
                     </div>
-                 </div>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg border border-yellow-100">
+                    <p className="text-lg text-gray-800 font-medium mb-2">Por favor, acércate a <span className="text-unahur-green font-bold">Gestión Estudiantil</span>:</p>
+                    <ul className="space-y-2 text-gray-700">
+                      <li className="flex items-center gap-2">
+                        <MapPin size={18} className="text-unahur-blue" />
+                        Sede Origone (Planta Baja)
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Clock size={18} className="text-unahur-blue" />
+                        Lunes a Viernes de 9 a 20 hs
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               )}
             </div>
           )}
@@ -521,18 +521,18 @@ function App() {
         {/* Results Card */}
         {resultados && alumnoDatos && resultados.inscripciones && (
           <div className="bg-white rounded-2xl shadow-card p-4 md:p-8 mb-12 border border-light-gray w-full mx-auto animate-fade-in">
-            
+
             {/* Header del Alumno */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-6 border-b border-light-gray mb-8">
               <div className="flex items-center mb-4 lg:mb-0">
                 <div className="p-3 rounded-xl bg-unahur-green mr-4">
-                   <User size={28} className="text-white" />
+                  <User size={28} className="text-white" />
                 </div>
                 <div>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-dark-gray capitalize">{alumnoDatos.alumno}</h2>
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-dark-gray capitalize">{alumnoDatos.alumno}</h2>
                 </div>
               </div>
-              
+
               <div className="flex items-center text-medium-gray bg-gray-50 px-4 py-3 rounded-lg border border-gray-100">
                 <IdCard size={24} className="text-unahur-accent mr-2" />
                 <span className="font-mono font-bold text-lg md:text-xl">{alumnoDatos.dni}</span>
@@ -560,17 +560,17 @@ function App() {
               {renderDesktopTable}
               {renderMobileCards}
             </div>
-            
+
             {/* Mensaje Informativo Inferior */}
             <div className="bg-blue-50 border border-unahur-accent/30 rounded-lg p-4 md:p-5 flex items-start gap-3 mt-6">
-               <div className="p-2 bg-unahur-accent rounded-full text-white mt-0.5 flex-shrink-0">
-                  <Users size={18} />
-               </div>
-               <div>
-                  <p className="text-sm md:text-base text-dark-gray">
-                    Recuerda verificar el aula en la puerta de la sede. Los horarios mostrados corresponden a tu inscripción actual.
-                  </p>
-               </div>
+              <div className="p-2 bg-unahur-accent rounded-full text-white mt-0.5 flex-shrink-0">
+                <Users size={18} />
+              </div>
+              <div>
+                <p className="text-sm md:text-base text-dark-gray">
+                  Recuerda verificar el aula en la puerta de la sede. Los horarios mostrados corresponden a tu inscripción actual.
+                </p>
+              </div>
             </div>
 
           </div>
@@ -588,11 +588,10 @@ function App() {
                   setMapaActivo('origone')
                   setPisoActivo('baja')
                 }}
-                className={`px-4 py-2 md:px-6 md:py-3 rounded-lg font-medium flex items-center transition-all duration-200 text-sm md:text-base ${
-                  mapaActivo === 'origone'
-                    ? 'bg-unahur-green text-white shadow-lg'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+                className={`px-4 py-2 md:px-6 md:py-3 rounded-lg font-medium flex items-center transition-all duration-200 text-sm md:text-base ${mapaActivo === 'origone'
+                  ? 'bg-unahur-green text-white shadow-lg'
+                  : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
               >
                 <Building size={18} className="mr-2" />
                 Origone
@@ -602,11 +601,10 @@ function App() {
                   setMapaActivo('laPatria')
                   setPisoActivo('baja')
                 }}
-                className={`px-4 py-2 md:px-6 md:py-3 rounded-lg font-medium flex items-center transition-all duration-200 text-sm md:text-base ${
-                  mapaActivo === 'laPatria'
-                    ? 'bg-unahur-green text-white shadow-lg'
-                    : 'bg-white/10 text-white hover:bg-white/20'
-                }`}
+                className={`px-4 py-2 md:px-6 md:py-3 rounded-lg font-medium flex items-center transition-all duration-200 text-sm md:text-base ${mapaActivo === 'laPatria'
+                  ? 'bg-unahur-green text-white shadow-lg'
+                  : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
               >
                 <Home size={18} className="mr-2" />
                 La Patria
@@ -627,7 +625,7 @@ function App() {
               <div className="lg:col-span-2">
                 <div className="bg-light-gray rounded-xl p-3 md:p-4 border border-gray-300">
                   <div className="relative w-full h-64 md:h-96 lg:h-[500px] rounded-lg overflow-hidden bg-white cursor-pointer group"
-                       onClick={() => setImagenAmpliada(pisoActual.imagen)}>
+                    onClick={() => setImagenAmpliada(pisoActual.imagen)}>
                     <img
                       src={pisoActual.imagen}
                       alt={`Mapa de ${mapaActual.nombre} - ${pisoActual.nombre}`}
@@ -648,11 +646,10 @@ function App() {
                         <button
                           key={piso.id}
                           onClick={() => setPisoActivo(piso.id)}
-                          className={`px-4 py-2 rounded-lg text-sm md:text-base font-medium transition-colors ${
-                            pisoActivo === piso.id
-                              ? 'bg-unahur-green text-white shadow'
-                              : 'bg-gray-200 text-medium-gray hover:bg-gray-300'
-                          }`}
+                          className={`px-4 py-2 rounded-lg text-sm md:text-base font-medium transition-colors ${pisoActivo === piso.id
+                            ? 'bg-unahur-green text-white shadow'
+                            : 'bg-gray-200 text-medium-gray hover:bg-gray-300'
+                            }`}
                         >
                           {piso.nombre}
                         </button>
