@@ -22,7 +22,7 @@ import {
   HelpCircle
 } from 'lucide-react'
 
-import logoUnahur from './assets/logo-unahur.png'
+import logoUnahur from './assets/logo-chico.png'
 import logo from './assets/logo.png'
 import mapaOrigone from './assets/mapa-origone.png'
 import mapaOrigoneAlta from './assets/mapa-origone-planta-alta.png'
